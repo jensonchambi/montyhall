@@ -24,6 +24,22 @@
 
 <h1>🍀 Paradoja de Monty Hall</h1>
 <h2>Simulación de 100 veces</h2>
+
+<p>
+    La paradoja de Monty Hall es un problema de probabilidad basado en un juego de un concurso de televisión. En este juego, hay tres puertas: detrás de una hay un premio (como un coche), y detrás de las otras dos hay cabras. 
+    Después de que el concursante elige una puerta, el presentador, que sabe qué hay detrás de cada puerta, abre una de las puertas restantes que no tiene el premio. 
+    El concursante tiene entonces la opción de mantener su elección original o cambiar a la otra puerta. 
+    Esta simulación te permitirá ver los resultados de cambiar o no cambiar la elección, mostrándote cuántas veces ganaste o perdiste en 100 intentos.
+</p>
+
+<p>
+    **Leyenda de Emojis:**
+    <br>🚗 Puerta donde se encuentra el auto
+    <br>🥇 Primera puerta elegida por el concursante.
+    <br>👁️ Puerta abierta por el presentador.
+    <br>🥈 Segunda puerta elegida por el concursante.
+</p>
+
 <button onclick="runSimulation(false)">No cambio de puerta</button>
 <button onclick="runSimulation(true)">Cambio de puerta</button>
 <p id="summary"></p>
@@ -66,6 +82,7 @@ function runSimulation(changeDoor) {
         const puertas = ["", "", ""];
         puertas[prizeDoor - 1] = "🚗"; // Auto para el $1000
         puertas[userChoice - 1] += "🥇"; // Elección 1
+        puertas[openedDoor - 1] += "👁️"; // Puerta abierta por el presentador
         if (changeDoor) puertas[finalChoice - 1] += "🥈"; // Elección 2
 
         // Verificar si el usuario gana o pierde
