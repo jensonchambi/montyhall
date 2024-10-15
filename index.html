@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍀 Paradoja de Monty Hall - Simulación de 100 veces</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* Ancho específico para cada columna */
+        th:nth-child(1), td:nth-child(1) { width: 100px; }
+        th:nth-child(2), td:nth-child(2) { width: 150px; }
+        th:nth-child(3), td:nth-child(3) { width: 150px; }
+        th:nth-child(4), td:nth-child(4) { width: 150px; }
+        th:nth-child(5), td:nth-child(5) { width: 100px; }
+    </style>
+</head>
+<body>
+
+<h1>🍀 Paradoja de Monty Hall</h1>
+<h2>Simulación de 100 veces</h2>
+<button onclick="runSimulation(false)">No cambio de puerta</button>
+<button onclick="runSimulation(true)">Cambio de puerta</button>
+<p id="summary"></p>
+<table id="resultsTable">
+    <thead>
+        <tr>
+            <th>Simulación</th>
+            <th>Puerta 1</th>
+            <th>Puerta 2</th>
+            <th>Puerta 3</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+function runSimulation(changeDoor) {
+    let wins = 0, losses = 0; // Contadores para victorias y pérdidas
+    const numSimulations = 100;
+    const resultsTableBody = document.querySelector("#resultsTable tbody");
+    resultsTableBody.innerHTML = ""; // Limpiar la tabla antes de cada simulación
+
+    for (let i = 0; i < numSimulations; i++) {
+        const prizeDoor = Math.floor(Math.random() * 3) + 1; // Puerta con el premio
+        let userChoice = Math.floor(Math.random() * 3) + 1; // Elección inicial del usuario
+
+        // El anfitrión abre una puerta que no tiene el premio y que no es la elegida por el usuario
+        let openedDoor;
+        do {
+            openedDoor = Math.floor(Math.random() * 3) + 1;
+        } while (openedDoor === prizeDoor || openedDoor === userChoice);
+
+        // Cambiar la elección si se opta por ello
+        const finalChoice = changeDoor ? 
+            [1, 2, 3].find(door => door !== userChoice && door !== openedDoor) : 
+            userChoice;
+
+        // Inicializar las puertas
+        const puertas = ["", "", ""];
+        puertas[prizeDoor - 1] = "🚗"; // Auto para el $1000
+        puertas[userChoice - 1] += "🥇"; // Elección 1
+        if (changeDoor) puertas[finalChoice - 1] += "🥈"; // Elección 2
+
+        // Verificar si el usuario gana o pierde
+        if (finalChoice === prizeDoor) {
+            wins++;
+            result = "✅"; // Gana
+        } else {
+            losses++;
+            result = "❌"; // Pierde
+        }
+
+        // Añadir fila a la tabla con los resultados
+        resultsTableBody.innerHTML += `<tr>
+            <td>${i + 1}</td>
+            <td>${puertas[0]}</td>
+            <td>${puertas[1]}</td>
+            <td>${puertas[2]}</td>
+            <td>${result}</td>
+        </tr>`;
+    }
+
+    // Mostrar resumen
+    document.getElementById("summary").innerHTML = `
+        <h2>Resultados</h2>
+        <p>✅ ${wins} veces ganadas</p>
+        <p>❌ ${losses} veces perdidas</p>
+    `;
+}
+</script>
+
+</body>
+</html>
